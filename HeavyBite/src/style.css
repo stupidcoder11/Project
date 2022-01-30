@@ -1,0 +1,40 @@
+body{
+    margin: 0px;
+    text-align: center;
+}
+
+p{
+    color: #ffff;
+    font-size: 2rem;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-block: 0px;
+    position: relative;
+    top: 30px;
+    border: 10px;
+    border-color: black;
+    border-style: solid;
+}
+
+.a{
+    background-color: #1E6F5C;
+    height: 600px;
+}
+
+.b{
+    background-color: #289672;
+    height: 500px;
+}
+
+.c{
+    background-color: #29BB89;
+    height: 400px;
+}
+
+.d{
+    background-color: #E6DD3B;
+    height: 300px;
+}
+
+.d p{
+    color: #000000;
+}
