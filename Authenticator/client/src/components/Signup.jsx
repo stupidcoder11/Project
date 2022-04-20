@@ -1,12 +1,21 @@
 import React, { useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import Modal from "react-bootstrap/Modal";
 
 function Signup () {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [tnc, setTnc] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const handleHide = ()=>{
+    setShow(false);
+    setTimeout(()=>{
+      navigate("/")
+    }, 300)
+  }
 
   let navigate = useNavigate();
 
@@ -21,8 +30,7 @@ function Signup () {
       .then((response)=>{
         console.log(response.data);
         if(response.data.message) {
-          alert(response.data.message);
-          navigate("/");
+          setShow(true);
         }
         else if(response.data.error) {
           if(response.data.error.errno === 1062) {
@@ -164,6 +172,14 @@ function Signup () {
           <Link to='/'><h6 className='text-secondary my-3 text-end text-decoration-underline'>Already a user?</h6></Link>
         </form>
       </div>
+      <Modal show={show} onHide={handleHide}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{fontSize: "1.8rem", color: "#F6BE00"}}>Account created!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="lead">Explore the site</p>   
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 import Axios from "axios";
 
 function Login() {
@@ -7,21 +8,33 @@ function Login() {
   const [pass, setPass] = useState('');
   const [rememberCheck, setRememberCheck] = useState(false);
   const [responseData, setResponseData] = useState([]);
+  const [show, setShow] = useState(false);
+  const [name, setName] = useState('?');
+  const navigate = useNavigate();
 
-  let navigate = useNavigate();
+  const handleShow = ()=> { setShow(true); }
+  
+  const handleHide = ()=> {
+    setShow(false)
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 200);
+  }
 
   const handleSubmit = (e)=>{
     e.preventDefault();
     const data = {
       email: email,
-      password: pass
+      password: pass,
+      rememberCheck: rememberCheck
     }
+
     Axios.post("http://localhost:3001/api/users/verify", data)
     .then((response)=>{
       setResponseData(response.data);
       if(response.data.results.length>0) {
-        alert(`Welcome ${responseData.results[0].name}`);
-        navigate("/dashboard");
+        setName(response.data.results[0].name);
+        handleShow();
       }
     })
     .catch((err)=>{
@@ -32,6 +45,7 @@ function Login() {
   useEffect(()=>{
     console.log(responseData);
   }, [responseData]);
+
 
   return (
     <div className="Login">
@@ -137,6 +151,14 @@ function Login() {
           </Link>
         </form>
       </div>
+      <Modal show={show} onHide={handleHide}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{fontSize: "1.8rem", color: "#F6BE00"}}>Welcome {name}!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="lead">We hope hope you have a good experience!</p>   
+        </Modal.Body>
+      </Modal>
     </div>
   )
 }
