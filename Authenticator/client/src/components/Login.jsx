@@ -10,7 +10,10 @@ function Login() {
   const [responseData, setResponseData] = useState([]);
   const [show, setShow] = useState(false);
   const [name, setName] = useState('?');
+  const [loginStatus, setLoginStatus] = useState(false);
   const navigate = useNavigate();
+
+  Axios.defaults.withCredentials = true;
 
   const handleShow = ()=> { setShow(true); }
   
@@ -26,7 +29,8 @@ function Login() {
     const data = {
       email: email,
       password: pass,
-      rememberCheck: rememberCheck
+      rememberCheck: rememberCheck,
+      loginStatus
     }
 
     Axios.post("http://localhost:3001/api/users/verify", data)
@@ -45,6 +49,14 @@ function Login() {
   useEffect(()=>{
     console.log(responseData);
   }, [responseData]);
+
+  useEffect(()=>{
+    Axios.get("http://localhost:3001/api/users/loginStatus")
+    .then((response)=>{
+      setLoginStatus(response.data.loggedIn)
+      console.log(response.data);
+    })
+  }, [])
 
 
   return (
