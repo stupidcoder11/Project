@@ -80,6 +80,8 @@ router.route("/verify")
                 });
                 
             else if(bcrypt.compareSync(data.password, results[0].password)) {
+                req.session.user = results
+                console.log(req.session.user);
                 res.send({
                     response: "Success",
                     emailCheck: true,
@@ -184,6 +186,25 @@ router.route("/readByEmail")
                         results: results
                     });
                 }
+            });
+        }
+    })
+
+/**
+ * IF USER IS LOGGED IN OR NOT (SESSION)
+ */
+router.route("/loginStatus")
+    .get(function(req, res){
+        if(req.session.user) {
+            res.send({
+                loggedIn: true,
+                user: req.session.user
+            });
+        }
+        else {
+            res.send({
+                loggedIn: false,
+                user: []
             });
         }
     })
